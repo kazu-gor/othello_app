@@ -24,7 +24,7 @@ from flask import Flask, jsonify, abort, make_response
     
 api = Flask(__name__)
 
-@api.route('/', methods=['GET'])
+@api.route('/')
 def get_user():
     try:
         sum
@@ -50,6 +50,5 @@ def not_found(error):
 
 if __name__ == '__main__':
     api.run(host='127.0.0.1', port=8080, debug=True)
-    
 # [END gae_python3_app]
 # [END gae_python38_app]
