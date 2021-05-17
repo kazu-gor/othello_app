@@ -1,3 +1,4 @@
+
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +15,41 @@
 
 # [START gae_python38_app]
 # [START gae_python3_app]
-from flask import Flask
 
+from flask import Flask, jsonify, abort, make_response
+# import peewee
 
-# If `entrypoint` is not defined in app.yaml, App Engine will look for an app
-# called `app` in `main.py`.
-app = Flask(__name__)
+# class User(peewee.Model):
+#     user_input = peewee.IntegerField()
+    
+api = Flask(__name__)
 
+@api.route('/', methods=['GET'])
+def get_user():
+    try:
+        sum
+    except NameError:
+        sum = 0
+    try:
+        sum += 3
+    except User.DoesNotExist:
+        abort(404)
+        
+    result = {
+        "data": {
+            "output": sum,
+        }
+    }
+    # return make_response(jsonify(result))
+    return result
 
-@app.route('/')
-def hello():
-    """Return a friendly HTTP greeting."""
-    return 'Hello World!'
-
+@api.errorhandler(404)
+def not_found(error):
+    # return make_response(jsonify({'error': 'Not found'}), 404)
+    return {'error': 'Not found'}
 
 if __name__ == '__main__':
-    # This is used when running locally only. When deploying to Google App
-    # Engine, a webserver process such as Gunicorn will serve the app. This
-    # can be configured by adding an `entrypoint` to app.yaml.
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    api.run(host='127.0.0.1', port=8080, debug=True)
+    
 # [END gae_python3_app]
 # [END gae_python38_app]
