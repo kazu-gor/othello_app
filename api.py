@@ -23,11 +23,13 @@ def get_user():
         }
     }
     
-    return make_response(jsonify(result))
+    # return make_response(jsonify(result))
+    return result
 
 @api.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
+    # return make_response(jsonify({'error': 'Not found'}), 404)
+    return {'error': 'Not found'}
 
 if __name__ == '__main__':
-    api.run(host='0.0.0.0', port=3000)
+    api.run(host='0.0.0.0', port=3000, debug=True)
