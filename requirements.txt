@@ -1,2 +1,2 @@
 peewee
-flask
+Flask==1.1.4
