@@ -27,21 +27,21 @@ app = Flask(__name__)
 @app.route('/')
 def get_user():
     try:
-        sum
+        total
     except NameError:
-        sum = 0
+        total = 0
     try:
-        sum += 3
+        total += 3
     except User.DoesNotExist:
         abort(404)
         
-    result = {
-        "data": {
-            "output": sum,
-        }
-    }
+    # result = {
+    #     "data": {
+    #         "output": total,
+    #     }
+    # }
     # return make_response(jsonify(result))
-    return result
+    return total
 
 # @app.errorhandler(404)
 # def not_found(error):
