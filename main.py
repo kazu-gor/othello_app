@@ -22,9 +22,9 @@ from flask import Flask, jsonify, abort, make_response
 # class User(peewee.Model):
 #     user_input = peewee.IntegerField()
     
-api = Flask(__name__)
+app = Flask(__name__)
 
-@api.route('/')
+@app.route('/')
 def get_user():
     try:
         sum
@@ -43,12 +43,12 @@ def get_user():
     # return make_response(jsonify(result))
     return result
 
-@api.errorhandler(404)
-def not_found(error):
-    # return make_response(jsonify({'error': 'Not found'}), 404)
-    return {'error': 'Not found'}
+# @app.errorhandler(404)
+# def not_found(error):
+#     # return make_response(jsonify({'error': 'Not found'}), 404)
+#     return {'error': 'Not found'}
 
 if __name__ == '__main__':
-    api.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True)
 # [END gae_python3_app]
 # [END gae_python38_app]
