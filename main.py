@@ -17,10 +17,10 @@
 # [START gae_python3_app]
 
 from flask import Flask, jsonify, abort, make_response
-# import peewee
+import peewee
 
-# class User(peewee.Model):
-#     user_input = peewee.IntegerField()
+class User(peewee.Model):
+    user_input = peewee.IntegerField()
     
 app = Flask(__name__)
 
@@ -40,7 +40,6 @@ def test():
             "output": total,
         }
     }
-    # return make_response(jsonify(result))
     return result
 
 # @app.errorhandler(404)
