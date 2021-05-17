@@ -6,7 +6,8 @@ class User(peewee.Model):
     
 api = Flask(__name__)
 
-@api.route('/', methods=['GET'])
+# @api.route('/', methods=['GET'])
+@api.route('/')
 def get_user():
     try:
         sum
