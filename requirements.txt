@@ -1,2 +1,3 @@
 peewee
 Flask==1.1.4
+gunicorn==20.0.4
