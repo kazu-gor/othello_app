@@ -41,7 +41,7 @@ def test():
         }
     }
     # return make_response(jsonify(result))
-    return result
+    return "Hello World"
 
 # @app.errorhandler(404)
 # def not_found(error):
