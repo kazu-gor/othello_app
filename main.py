@@ -16,7 +16,7 @@
 # [START gae_python38_app]
 # [START gae_python3_app]
 
-from flask import Flask, jsonify, abort, make_response
+from flask import Flask
 # import peewee
 
 # class User(peewee.Model):
@@ -25,7 +25,7 @@ from flask import Flask, jsonify, abort, make_response
 app = Flask(__name__)
 
 @app.route('/')
-def get_user():
+def test():
     try:
         total
     except NameError:
@@ -35,13 +35,13 @@ def get_user():
     except User.DoesNotExist:
         abort(404)
         
-    # result = {
-    #     "data": {
-    #         "output": total,
-    #     }
-    # }
+    result = {
+        "data": {
+            "output": total,
+        }
+    }
     # return make_response(jsonify(result))
-    return total
+    return result
 
 # @app.errorhandler(404)
 # def not_found(error):
