@@ -1,3 +1,10 @@
 peewee
 gunicorn==20.0.4
 flask
+numpy
+nevergrad
+ray
+torch
+tensorboard
+matplotlib
+seaborn
