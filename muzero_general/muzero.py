@@ -14,7 +14,7 @@ import torch
 from torch.utils.tensorboard import SummaryWriter
 
 from . import diagnose_model, models, replay_buffer, self_play, shared_storage, trainer
-
+from .games import othello_update
 
 class MuZero:
     """
@@ -37,9 +37,8 @@ class MuZero:
     def __init__(self, game_name, config=None, split_resources_in=1):
         # Load the game and the config from the module with the game name
         try:
-            game_module = importlib.import_module("games." + game_name)
-            self.Game = game_module.Game
-            self.config = game_module.MuZeroConfig()
+            self.Game = othello_update.Game
+            self.config = othello_update.MuZeroConfig()
             
         except ModuleNotFoundError as err:
             print(
