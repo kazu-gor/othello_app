@@ -31,32 +31,31 @@ app = Flask(__name__)
 def index():
     html = '''
     <form action="/othello">
-        <p><label>input:[row, col] </label>
-        <input type="text" name="board" value="[0,0,0,0,0,0,0,0]">
-        <button type="submit" formethod="get">GET</button>
-        <button type="submit" formethod="post">POST</button></p>
+        <p><label>test: </label>
+        <input type="text" name="board" value="default">
+        <button type="submit" formmethod="get">GET</button>
+        <button type="submit" formmethod="post">POST</button></p>
     </form>
     '''
     return Markup(html)
 
 @app.route('/othello', methods=['GET', 'POST'])
 def othello():
-    try:
-        if request.method == 'GET':
-            return request.args.get('board', '')
-        elif request.method == 'POST':
-            muzero = muzero.MuZero("othello_update")
-            board = request.form['board']
-            board_player1 = np.where(board == 1, 1.0, 0.0)
-            board_player2 = np.where(board == -1, 1.0, 0.0)
-            board_to_play = np.full((8, 8), 1, dtype="int32")
-            observation = np.array([board_player1, board_player2, board_to_play])
-            row, col = muzero.application_match(render=True, board=board, observation=observation)
-            return row
-        else:
-            return abort(400)
-    except Exception as e:
-        return str(e)
+    if request.method == 'GET':
+        return 0
+    if request.method == 'POST':
+        model = muzero.MuZero("othello_update")
+        board = np.fromstring(request.form['board'], dtype="int8", sep=",")
+        board = board.reshape(8, 8)
+        print(board)
+        board_player1 = np.where(board == 1, 1.0, 0.0)
+        board_player2 = np.where(board == -1, 1.0, 0.0)
+        board_to_play = np.full((8, 8), 1, dtype="int32")
+        observation = np.array([board_player1, board_player2, board_to_play])
+        row, col = model.application_match(render=False, board=board, observation=observation)
+        return str(row) + "," + str(col)
+    else:
+        return abort(400)
     
 
 # @app.errorhandler(404)
