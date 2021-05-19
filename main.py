@@ -16,31 +16,40 @@
 # [START gae_python38_app]
 # [START gae_python3_app]
 
-from flask import Flask, jsonify, abort, make_response
+from flask import *
 import peewee
 
-class User(peewee.Model):
-    user_input = peewee.IntegerField()
+from muzero_general import muzero
+
+# class User(peewee.Model):
+#     user_input = peewee.IntegerField()
     
 app = Flask(__name__)
 
 @app.route('/')
-def test():
+def index():
+    html = '''
+    <form action="/othello">
+        <p><label>input:[row, col] </label>
+        <input type="text" name="index" value="0,1">
+        <button type="submit" formethod="get">GET</button>
+        <button type="submit" formethod="post">POST</button></p>
+    </form>
+    '''
+    return Markup(html)
+
+@app.route('/othello', methods=['GET', 'POST'])
+def othello():
     try:
-        total
-    except NameError:
-        total = 0
-    try:
-        total += 3
-    except User.DoesNotExist:
-        abort(404)
-        
-    result = {
-        "data": {
-            "output": total,
-        }
-    }
-    return result
+        if request.method == 'GET':
+            return request.args.get('index', '')
+        elif request.method == 'POST':
+            return request.form['index']
+        else:
+            return abort(400)
+    except Exception as e:
+        return str(e)
+    
 
 # @app.errorhandler(404)
 # def not_found(error):
@@ -48,6 +57,6 @@ def test():
 #     return {'error': 'Not found'}
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run()
 # [END gae_python3_app]
 # [END gae_python38_app]
