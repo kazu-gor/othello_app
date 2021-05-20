@@ -13,11 +13,13 @@ class MuZeroConfig:
         # More information is available here: https://github.com/werner-duvaud/muzero-general/wiki/Hyperparameter-Optimization
 
         self.seed = 0  # Seed for numpy, torch and the game
-        self.max_num_gpus = None  # Fix the maximum number of GPUs to use. It's usually faster to use a single GPU (set it to 1) if it has enough memory. None will use every GPUs available
+        self.max_num_gpus = 4  # Fix the maximum number of GPUs to use. It's usually faster to use a single GPU (set it to 1) if it has enough memory. None will use every GPUs available
 
 
 
         ### Game
+        self.board_size = 8
+        self.board = None
         self.observation_shape = (3, 8, 8)  # (channels, height, width)
         self.action_space = list(range(8 * 8))  # Fixed list of all possible actions. You should only edit the length
         self.players = list(range(2))  # List of players. You should only edit the length
@@ -33,7 +35,7 @@ class MuZeroConfig:
         self.num_workers = 2  # Number of simultaneous threads/workers self-playing to feed the replay buffer
         self.selfplay_on_gpu = True
         self.max_moves = 60  # Maximum number of moves if game is not finished before
-        self.num_simulations = 400  # Number of future moves self-simulated
+        self.num_simulations = 200  # Number of future moves self-simulated
         self.discount = 1  # Chronological discount of the reward
         self.temperature_threshold = None  # Number of moves before dropping the temperature given by visit_softmax_temperature_fn to 0 (ie selecting the best action). If None, visit_softmax_temperature_fn is used every time
 
@@ -52,7 +54,7 @@ class MuZeroConfig:
         self.support_size = 10  # Value and reward are scaled (with almost sqrt) and encoded on a vector with a range of -support_size to support_size. Choose it so that support_size <= sqrt(max(abs(discounted reward)))
 
         # Residual Network
-        self.downsample = "CNN"  # Downsample observations before representation network, False / "CNN" (lighter) / "resnet" (See paper appendix Network Architecture)
+        self.downsample = False  # Downsample observations before representation network, False / "CNN" (lighter) / "resnet" (See paper appendix Network Architecture)
         self.blocks = 6  # Number of blocks in the ResNet
         self.channels = 128  # Number of channels in the ResNet
         self.reduced_channels_reward = 2  # Number of channels in reward head
@@ -76,8 +78,8 @@ class MuZeroConfig:
         self.results_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../results", os.path.basename(__file__)[:-3], datetime.datetime.now().strftime("%Y-%m-%d--%H-%M-%S"))  # Path to store the model weights and TensorBoard logs
         self.save_model = True  # Save the checkpoint in results_path as model.checkpoint
         self.training_steps = 10000  # Total number of training steps (ie weights update according to a batch)
-        self.batch_size = 512  # Number of parts of games to train on at each training step
-        self.checkpoint_interval = 50  # Number of training steps before using the model for self-playing
+        self.batch_size = 64  # Number of parts of games to train on at each training step
+        self.checkpoint_interval = 20  # Number of training steps before using the model for self-playing
         self.value_loss_weight = 1  # Scale the value loss to avoid overfitting of the value function, paper recommends 0.25 (See paper appendix Reanalyze)
         self.train_on_gpu = torch.cuda.is_available()  # Train on GPU if available
 
@@ -132,8 +134,8 @@ class Game(AbstractGame):
     Game wrapper.
     """
 
-    def __init__(self, seed=None):
-        self.env = Othello()
+    def __init__(self, board, seed=None):
+        self.env = Othello(board)
 
     def pass_step(self):
         observation, reward, done = self.env.pass_step()
@@ -182,7 +184,16 @@ class Game(AbstractGame):
             Initial observation of the game.
         """
         return self.env.reset()
-
+    
+    def reset_manual(self, board):
+        """
+        Reset the game manually
+        
+        Returns: 
+            Setted observation of the game.
+        """
+        return self.env.reset_manual(board)
+    
     def close(self):
         """
         Properly close the game.
@@ -194,7 +205,7 @@ class Game(AbstractGame):
         Display the game observation.
         """
         self.env.render()
-        input("Press enter to take a step ")
+        # input("Press enter to take a step ")
 
     def human_to_action(self):
         """
@@ -221,7 +232,7 @@ class Game(AbstractGame):
 
 
 class Othello:
-    def __init__(self):
+    def __init__(self, seed=None):
         self.board_size = 8
         self.board = numpy.zeros((self.board_size, self.board_size), dtype="int32")
         self.board[3][3], self.board[4][4], self.board[3][4], self.board[4][3] = 1, 1, -1, -1
@@ -238,6 +249,11 @@ class Othello:
         self.board[3][3], self.board[4][4], self.board[3][4], self.board[4][3] = 1, 1, -1, -1
         self.player = 1
         return self.get_observation()
+    
+    def reset_manual(self, board):
+        self.board = board
+        self.player = 1
+        return self.get_observation()
 
     def pass_step(self):
         done = self.is_finished()
@@ -251,6 +267,7 @@ class Othello:
     def step(self, action):
         row = math.floor(action / self.board_size)
         col = action % self.board_size
+        self.board = self.board.copy()
         self.board[row][col] = self.player
 
         self.board = self.update(action)
@@ -346,9 +363,9 @@ class Othello:
 
     def is_finished(self):
         print(f"""\
-numpy.sum(self.board == 1) == 0: {numpy.sum(self.board == 1) == 0}
-numpy.sum(self.board == -1) == 0: {numpy.sum(self.board == -1) == 0}
-numpy.sum(self.board == 0) == 0: {numpy.sum(self.board == 0) == 0}
+self.board : X: {numpy.sum(self.board == 1) }
+self.board : O: {numpy.sum(self.board == -1)}
+self.board : . : {numpy.sum(self.board == 0)}
 """)
         if (numpy.sum(self.board == 1) == 0 or
             numpy.sum(self.board == -1) == 0 or

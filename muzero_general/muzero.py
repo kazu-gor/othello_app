@@ -14,7 +14,7 @@ import torch
 from torch.utils.tensorboard import SummaryWriter
 
 from . import diagnose_model, models, replay_buffer, self_play, shared_storage, trainer
-from .games import othello_update
+from .games import othello
 
 class MuZero:
     """
@@ -37,8 +37,8 @@ class MuZero:
     def __init__(self, game_name, config=None, split_resources_in=1):
         # Load the game and the config from the module with the game name
         try:
-            self.Game = othello_update.Game
-            self.config = othello_update.MuZeroConfig()
+            self.Game = othello.Game
+            self.config = othello.MuZeroConfig()
             
         except ModuleNotFoundError as err:
             print(
@@ -757,7 +757,7 @@ if __name__ == "__main__":
     board = numpy.zeros((8, 8), dtype="int32")
     board[3][3], board[4][4], board[3][4], board[4][3] = 1, 1, -1, -1
     board[4][5], board[4][4] = -1, -1
-    muzero = MuZero("othello_update")
+    muzero = MuZero("othello")
     
     board_player1 = numpy.where(board == 1, 1.0, 0.0)
     board_player2 = numpy.where(board == -1, 1.0, 0.0)
