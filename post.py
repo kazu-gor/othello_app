@@ -1,7 +1,8 @@
 import requests
 import pprint
 
-url = "http://127.0.0.1:5000/"
+# url = "http://127.0.0.1:5000/"
+url = "https://othelloapi.df.r.appspot.com"
 
 value = """\
     [[ 0,  0,  0,  0,  0,  0,  0,  0],
@@ -15,4 +16,5 @@ value = """\
 
 response = requests.post(url, {"board": value})
 
-pprint.pprint(response.json())
+print(response)
+# pprint.pprint(response.json())
