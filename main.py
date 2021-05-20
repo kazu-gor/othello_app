@@ -21,6 +21,7 @@ import numpy as np
 from flask import *
 
 from muzero_general import muzero
+from lib import edit_value
 
 # class User(peewee.Model):
 #     user_input = peewee.IntegerField()
@@ -45,9 +46,9 @@ def othello():
         return 0
     if request.method == 'POST':
         model = muzero.MuZero("othello_update")
+        # board = edit_value(request.form['board'])
         board = np.fromstring(request.form['board'], dtype="int8", sep=",")
         board = board.reshape(8, 8)
-        print(board)
         board_player1 = np.where(board == 1, 1.0, 0.0)
         board_player2 = np.where(board == -1, 1.0, 0.0)
         board_to_play = np.full((8, 8), 1, dtype="int32")
@@ -56,7 +57,7 @@ def othello():
         return str(row) + "," + str(col)
     else:
         return abort(400)
-    
+
 
 # @app.errorhandler(404)
 # def not_found(error):
