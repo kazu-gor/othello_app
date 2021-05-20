@@ -48,7 +48,7 @@
 3. ```4, 3```のように```行，列```の形式でReturnされる．
 
 
-# 参考文献
+## 参考文献
 
 + [DeepMind Official Blog](https://deepmind.com/blog/article/muzero-mastering-go-chess-shogi-and-atari-without-rules)
 + [Muzero paper](https://www.nature.com/articles/s41586-020-03051-4.epdf?sharing_token=kTk-xTZpQOF8Ym8nTQK6EdRgN0jAjWel9jnR3ZoTv0PMSWGj38iNIyNOw_ooNp2BvzZ4nIcedo7GEXD7UmLqb0M_V_fop31mMY9VBBLNmGbm0K9jETKkZnJ9SgJ8Rwhp3ySvLuTcUr888puIYbngQ0fiMf45ZGDAQ7fUI66-u7Y%3D)
