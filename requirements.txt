@@ -4,6 +4,7 @@ flask
 numpy
 nevergrad
 ray
+ray[default]
 torch
 tensorboard
 matplotlib
