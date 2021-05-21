@@ -20,7 +20,7 @@ import numpy as np
 from flask import *
 
 from muzero_general import muzero
-from lib import edit_value
+from lib.edit import edit_value
     
 app = Flask(__name__)
 
