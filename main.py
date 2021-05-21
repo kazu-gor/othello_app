@@ -24,23 +24,11 @@ from lib.edit import edit_value
     
 app = Flask(__name__)
 
-# @app.route('/')
-# def index():
-#     html = '''
-#     <form action="/othello">
-#         <p><label>test: </label>
-#         <input type="text" name="board" value="default">
-#         <button type="submit" formmethod="get">GET</button>
-#         <button type="submit" formmethod="post">POST</button></p>
-#     </form>
-#     '''
-#     return Markup(html)
-
 
 @app.route('/', methods=['GET', 'POST'])
 def othello():
     if request.method == "GET":
-        return 0
+        return "0"
     if request.method == 'POST':
         model = muzero.MuZero("othello_update")
         board = edit_value(request.form['board'])
@@ -49,16 +37,16 @@ def othello():
         board_to_play = np.full((8, 8), 1, dtype="int32")
         observation = np.array([board_player1, board_player2, board_to_play])
         row, col = model.application_match(render=False, board=board, observation=observation)
-        return make_response(jsonify({"result": str(row) + "," + str(col)}))
-        # return {"result": str(row) + "," + str(col)}
+        # return make_response(jsonify({"result": str(row) + "," + str(col)}))
+        return {"result": str(row) + "," + str(col)}
     else:
         return abort(400)
 
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
-    # return {'error': 'Not found'}
+    # return make_response(jsonify({'error': 'Not found'}), 404)
+    return {'error': 'Not found'}
 
 if __name__ == '__main__':
     app.run(debug=True, host="127.0.0.1")
