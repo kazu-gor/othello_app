@@ -1,9 +1,14 @@
 import requests
 import pprint
 import json
+import sys
 
-url = "http://127.0.0.1:5000/"
-# url = "https://othelloapi.df.r.appspot.com"
+if len(sys.argv) == 2:
+    url = "http://127.0.0.1:5000/"
+else:
+    url = "https://othelloapi.df.r.appspot.com"
+
+print("URL: ", url)
 
 value = """\
     [[ 0,  0,  0,  0,  0,  0,  0,  0],
