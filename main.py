@@ -49,6 +49,6 @@ def not_found(error):
     return {'error': 'Not found'}
 
 if __name__ == '__main__':
-    app.run(debug=True, host="127.0.0.1")
+    app.run(debug=False, host="127.0.0.1")
 # [END gae_python3_app]
 # [END gae_python38_app]
