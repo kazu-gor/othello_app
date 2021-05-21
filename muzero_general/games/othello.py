@@ -362,11 +362,6 @@ class Othello:
         return self.board
 
     def is_finished(self):
-        print(f"""\
-self.board : X: {numpy.sum(self.board == 1) }
-self.board : O: {numpy.sum(self.board == -1)}
-self.board : . : {numpy.sum(self.board == 0)}
-""")
         if (numpy.sum(self.board == 1) == 0 or
             numpy.sum(self.board == -1) == 0 or
             numpy.sum(self.board == 0) == 0):
