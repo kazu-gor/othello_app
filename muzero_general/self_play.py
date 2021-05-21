@@ -2,13 +2,12 @@ import math
 import time
 
 import numpy
-import ray
+# import ray
 import torch
 
 from . import models
 
 
-@ray.remote
 class SelfPlay:
     """
     Class which run in a dedicated thread to play games and save them to the replay-buffer.
@@ -30,19 +29,14 @@ class SelfPlay:
         self.model.eval()
 
     def continuous_self_play(self, shared_storage, replay_buffer, test_mode=False):
-        while ray.get(
-            shared_storage.get_info.remote("training_step")
-        ) < self.config.training_steps and not ray.get(
-            shared_storage.get_info.remote("terminate")
-        ):
-            self.model.set_weights(ray.get(shared_storage.get_info.remote("weights")))
-
+        while shared_storage.get_info.remote("training_step")\
+         < self.config.training_steps and not shared_storage.get_info.remote("terminate"):
+            self.model.set_weights(shared_storage.get_info.remote("weights"))
+            
             if not test_mode:
                 game_history = self.play_game(
                     self.config.visit_softmax_temperature_fn(
-                        trained_steps=ray.get(
-                            shared_storage.get_info.remote("training_step")
-                        )
+                        trained_steps = shared_storage.get_info.remote("training_step")
                     ),
                     self.config.temperature_threshold,
                     True,
@@ -96,14 +90,14 @@ class SelfPlay:
                 time.sleep(self.config.self_play_delay)
             if not test_mode and self.config.ratio:
                 while (
-                    ray.get(shared_storage.get_info.remote("training_step"))
+                    shared_storage.get_info.remote("training_step")
                     / max(
-                        1, ray.get(shared_storage.get_info.remote("num_played_steps"))
+                        1, shared_storage.get_info.remote("num_played_steps")
                     )
                     < self.config.ratio
-                    and ray.get(shared_storage.get_info.remote("training_step"))
+                    and shared_storage.get_info.remote("training_step")
                     < self.config.training_steps
-                    and not ray.get(shared_storage.get_info.remote("terminate"))
+                    and not shared_storage.get_info.remote("terminate")
                 ):
                     time.sleep(0.5)
 
