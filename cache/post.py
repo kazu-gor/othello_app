@@ -21,8 +21,34 @@ value = """\
     [ 0,  0,  0,  0,  0,  0,  0,  0]]"""
 
 response = requests.post(url, {"board": value})
-
 print(response)
-pprint.pprint(response.json())
+try:
+    pprint.pprint(response.json())
+except Exception as e:
+    pass
+
+response = requests.post(url, {"error": value})
+print(response)
+try:
+    pprint.pprint(response.json())
+except Exception as e:
+    pass
+
+response = requests.get(url, {"board": value})
+print(response)
+try:
+    pprint.pprint(response.json())
+except Exception as e:
+    pass
+
+response = requests.get(url)
+print(response)
+try:
+    pprint.pprint(response.json())
+except Exception as e:
+    pass
+
+
+
 # json_lines = [ json.loads(s) for s in response if s != "" ]
 # print(json_lines)
