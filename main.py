@@ -18,6 +18,7 @@
 
 import numpy as np
 from flask import *
+import nevergrad
 
 from muzero_general import muzero
 from lib.edit import edit_value
@@ -28,15 +29,21 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def othello():
     if request.method == "GET":
-        return "0"
+        try:
+            abort(400)
+        except Exception:
+            return abort(400)
     if request.method == 'POST':
-        model = muzero.MuZero("othello_update")
-        board = edit_value(request.form['board'])
-        board_player1 = np.where(board == 1, 1.0, 0.0)
-        board_player2 = np.where(board == -1, 1.0, 0.0)
-        board_to_play = np.full((8, 8), 1, dtype="int32")
-        observation = np.array([board_player1, board_player2, board_to_play])
-        row, col = model.application_match(render=False, board=board, observation=observation)
+        try:
+            model = muzero.MuZero("othello_update")
+            board = edit_value(request.form['board'])
+            board_player1 = np.where(board == 1, 1.0, 0.0)
+            board_player2 = np.where(board == -1, 1.0, 0.0)
+            board_to_play = np.full((8, 8), 1, dtype="int32")
+            observation = np.array([board_player1, board_player2, board_to_play])
+            row, col = model.application_match(render=False, board=board, observation=observation)
+        except Exception:
+            return abort(400)
         # return make_response(jsonify({"result": str(row) + "," + str(col)}))
         return {"result": str(row) + "," + str(col)}
     else:

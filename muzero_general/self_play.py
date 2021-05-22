@@ -2,7 +2,6 @@ import math
 import time
 
 import numpy
-# import ray
 import torch
 
 from . import models

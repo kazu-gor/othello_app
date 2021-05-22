@@ -1,11 +1,7 @@
-peewee
 gunicorn==20.0.4
 flask
 numpy
-nevergrad
-ray
-ray[default]
 torch
-tensorboard
 matplotlib
 seaborn
+nevergrad
