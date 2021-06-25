@@ -7,6 +7,7 @@ if len(sys.argv) == 2:
     url = "http://127.0.0.1:5000/"
 else:
     url = "https://othelloapi.df.r.appspot.com"
+    # url = "https://test-api-312.df.r.appspot.com"
 
 print("URL: ", url)
 
