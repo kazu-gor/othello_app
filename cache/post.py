@@ -23,6 +23,8 @@ value = {
     '7': '[0,0,0,0,0,0,0,0]',
 }
 
+value = {"test": 111}
+
 # input_json = json.dumps({'body': {'board': value}})
 input_json = json.dumps({'board': value})
 # print(input_json)
@@ -46,12 +48,12 @@ except Exception as e:
 # except Exception as e:
     # pass
 
-# response = requests.get(url, {"board": value})
-# print(response)
-# try:
-#     pprint.pprint(response.json())
-# except Exception as e:
-#     pass
+response = requests.get(url, {"board": value})
+print(response)
+try:
+    pprint.pprint(response.json())
+except Exception as e:
+    pass
 
 # response = requests.get(url)
 # print(response)
