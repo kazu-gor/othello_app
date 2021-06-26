@@ -29,7 +29,7 @@
 
 1. 以下のURLにAPIのリクエストを送る
 
-   https://othelloapi.df.r.appspot.com/
+   https://clever-aleph-318009.an.r.appspot.com
 
 2. 受け取る形式はPOSTのみ
 
