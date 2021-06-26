@@ -1,18 +1,32 @@
 import json
 import numpy as np
 
-json_open = open("othello_board.json", "r")
-json_load = json.load(json_open)
+value = {
+    '0': '[0,0,0,0,0,0,0,0]',
+    '1': '[0,0,0,0,0,0,0,0]',
+    '2': '[0,0,0,0,0,0,0,0]',
+    '3': '[0,0,0,-1,1,0,0,0]',
+    '4': '[0,0,0,1,-1,0,0,0]',
+    '5': '[0,0,0,0,0,0,0,0]',
+    '6': '[0,0,0,0,0,0,0,0]',
+    '7': '[0,0,0,0,0,0,0,0]',
+  }
 
-# print(json_load)
+json_in = {
+    "body": {'board': value}
+}
+
+
+# print(json_open)
+# json_load = json.load(json_open)
 
 board = list()
-
-for num, lines in json_load["body"]["board"].items():
+for num, lines in json_in["body"]["board"].items():
     print(lines)
-    board.append(lines)
+    board.append(lines.replace("[", "").replace("]", "").split(","))
 
-np_board = np.ndarray(board).reshape(8, -1)
-print(np_board)
+np_board = np.array(board).reshape(8, -1)
+print(np_board.astype(("int8")))
+print(np_board.shape)
     
     
