@@ -6,7 +6,8 @@ import sys
 if len(sys.argv) == 2:
     url = "http://127.0.0.1:5000/"
 else:
-    url = "https://othelloapi.df.r.appspot.com"
+    # url = "https://othelloapi.df.r.appspot.com"
+    url = "https://clever-aleph-318009.an.r.appspot.com"
     # url = "https://test-api-312.df.r.appspot.com"
 
 print("URL: ", url)
