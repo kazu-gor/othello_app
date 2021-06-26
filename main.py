@@ -30,7 +30,7 @@ app = Flask(__name__)
 def othello():
     if request.method == "GET":
         try:
-            abort(400)
+            return json.dumps({"result": 1})
         except Exception:
             return abort(400)
     if request.method == 'POST':
