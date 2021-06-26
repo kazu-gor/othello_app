@@ -11,43 +11,53 @@ else:
 
 print("URL: ", url)
 
-value = """\
-    [[ 0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  1, -1,  0,  0,  0],
-    [ 0,  0,  0, -1,  1,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0,  0,  0]]"""
+value = {
+    '0': '[0,0,0,0,0,0,0,0]',
+    '1': '[0,0,0,0,0,0,0,0]',
+    '2': '[0,0,0,0,0,0,0,0]',
+    '3': '[0,0,0,-1,1,0,0,0]',
+    '4': '[0,0,0,1,-1,0,0,0]',
+    '5': '[0,0,0,0,0,0,0,0]',
+    '6': '[0,0,0,0,0,0,0,0]',
+    '7': '[0,0,0,0,0,0,0,0]',
+}
 
-response = requests.post(url, {"board": value})
+# input_json = json.dumps({'body': {'board': value}})
+input_json = json.dumps({'board': value})
+# print(input_json)
+
+response = requests.post(url, input_json)
 print(response)
+try:
+    print(response.json())
+except Exception as e:
+    pass
+
 try:
     pprint.pprint(response.json())
 except Exception as e:
     pass
 
-response = requests.post(url, {"error": value})
-print(response)
-try:
-    pprint.pprint(response.json())
-except Exception as e:
-    pass
+# response = requests.post(url, {"error": value})
+# print(response)
+# try:
+#     pprint.pprint(response.json())
+# except Exception as e:
+    # pass
 
-response = requests.get(url, {"board": value})
-print(response)
-try:
-    pprint.pprint(response.json())
-except Exception as e:
-    pass
+# response = requests.get(url, {"board": value})
+# print(response)
+# try:
+#     pprint.pprint(response.json())
+# except Exception as e:
+#     pass
 
-response = requests.get(url)
-print(response)
-try:
-    pprint.pprint(response.json())
-except Exception as e:
-    pass
+# response = requests.get(url)
+# print(response)
+# try:
+#     pprint.pprint(response.json())
+# except Exception as e:
+#     pass
 
 
 

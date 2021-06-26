@@ -36,16 +36,15 @@ def othello():
     if request.method == 'POST':
         try:
             model = muzero.MuZero("othello_update")
-            board = edit_value(request.form['board'])
+            board = edit_value(request.get_json(force=True))
             board_player1 = np.where(board == 1, 1.0, 0.0)
             board_player2 = np.where(board == -1, 1.0, 0.0)
             board_to_play = np.full((8, 8), 1, dtype="int32")
             observation = np.array([board_player1, board_player2, board_to_play])
             row, col = model.application_match(render=False, board=board, observation=observation)
+            return {"result": str(row) + "," + str(col)}
         except Exception:
             return abort(400)
-        # return make_response(jsonify({"result": str(row) + "," + str(col)}))
-        return {"result": str(row) + "," + str(col)}
     else:
         return abort(400)
 
@@ -56,6 +55,6 @@ def not_found(error):
     return {'error': 'Not found'}
 
 if __name__ == '__main__':
-    app.run(debug=False, host="127.0.0.1")
+    app.run(debug=True, host="127.0.0.1")
 # [END gae_python3_app]
 # [END gae_python38_app]
