@@ -42,7 +42,7 @@ def othello():
             board_to_play = np.full((8, 8), 1, dtype="int32")
             observation = np.array([board_player1, board_player2, board_to_play])
             row, col = model.application_match(render=False, board=board, observation=observation)
-            return {"result": str(row) + "," + str(col)}
+            return json.dumps({"result": str(row) + "," + str(col)})
         except Exception:
             return abort(400)
     else:
