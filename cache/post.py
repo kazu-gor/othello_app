@@ -6,9 +6,7 @@ import sys
 if len(sys.argv) == 2:
     url = "http://127.0.0.1:5000/"
 else:
-    # url = "https://othelloapi.df.r.appspot.com"
     url = "https://clever-aleph-318009.an.r.appspot.com"
-    # url = "https://test-api-312.df.r.appspot.com"
 
 print("URL: ", url)
 
@@ -23,46 +21,18 @@ value = {
     '7': '[0,0,0,0,0,0,0,0]',
 }
 
-# value = {"test": 111}
-
-# input_json = json.dumps({'body': {'board': value}})
 input_json = json.dumps({'board': value})
-# print(input_json)
 
 response = requests.post(url, input_json)
-print(response)
+print(f"POST:\n{response}")
 try:
     print(response.json())
 except Exception as e:
     pass
 
-try:
-    pprint.pprint(response.json())
-except Exception as e:
-    pass
-
-# response = requests.post(url, {"error": value})
-# print(response)
-# try:
-#     pprint.pprint(response.json())
-# except Exception as e:
-    # pass
-
 response = requests.get(url, {"board": value})
-print(response)
+print(f"GET:\n{response}")
 try:
     pprint.pprint(response.json())
 except Exception as e:
     pass
-
-# response = requests.get(url)
-# print(response)
-# try:
-#     pprint.pprint(response.json())
-# except Exception as e:
-#     pass
-
-
-
-# json_lines = [ json.loads(s) for s in response if s != "" ]
-# print(json_lines)
