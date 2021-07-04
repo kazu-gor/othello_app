@@ -23,7 +23,7 @@ value = {
     '7': '[0,0,0,0,0,0,0,0]',
 }
 
-value = {"test": 111}
+# value = {"test": 111}
 
 # input_json = json.dumps({'body': {'board': value}})
 input_json = json.dumps({'board': value})
