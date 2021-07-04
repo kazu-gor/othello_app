@@ -1,7 +1,7 @@
 import numpy as np
 import json
 
-def  edit_value(value):
+def edit_value(value):
     try:
         board_list = list()
         
