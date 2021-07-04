@@ -46,14 +46,12 @@ def othello():
         try:
             model = muzero.MuZero("othello_update")
             board = edit_value(request.get_json(force=True))
-            return json.dumps({"result": str(board)})
-            
-            # board_player1 = np.where(board == 1, 1.0, 0.0)
-            # board_player2 = np.where(board == -1, 1.0, 0.0)
-            # board_to_play = np.full((8, 8), 1, dtype="int32")
-            # observation = np.array([board_player1, board_player2, board_to_play])
-            # row, col = model.application_match(render=False, board=board, observation=observation)
-            # return json.dumps({"result": str(row) + "," + str(col)})
+            board_player1 = np.where(board == 1, 1.0, 0.0)
+            board_player2 = np.where(board == -1, 1.0, 0.0)
+            board_to_play = np.full((8, 8), 1, dtype="int32")
+            observation = np.array([board_player1, board_player2, board_to_play])
+            row, col = model.application_match(render=False, board=board, observation=observation)
+            return json.dumps({"result": f"{str(row)},{str(col)}"})
             
             # return json.dumps({"result": request.get_json(force=True)})
         except Exception:
